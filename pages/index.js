@@ -1,8 +1,8 @@
 import React from 'react';
-import Link from 'next/link';
 import Layout from '@/components/Layout';
-import EventItem from '@/components/EventItem';
 import { API_URL } from '@/config/index';
+import Link from 'next/link';
+import EventItem from '@/components/EventItem';
 
 export default function HomePage({ events }) {
   return (

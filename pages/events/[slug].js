@@ -72,17 +72,19 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { slug } }) {
-  const res = await fetch(`${API_URL}/api/events?slug=${slug}`);
+  const res = await fetch(
+    `${API_URL}/api/events?filters[slug]slug=${slug}&populate=*`
+  );
   const events = await res.json();
 
   return {
-    props: { events: events[0] },
+    props: { evt: events[0] },
     revalidate: 1,
   };
 }
 
 // export async function getServerSideProps({ query: { slug } }) {
-//   const res = await fetch(`${API_URL}/events?slug=${slug}`);
+//   const res = await fetch(`${API_URL}/events?slug=${slug}&populate=*`);
 //   const events = await res.json();
 
 //   return {

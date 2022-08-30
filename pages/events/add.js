@@ -21,7 +21,7 @@ export default function AddEventPage() {
 
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const hasEmptyFields = Object.values(values).some(
@@ -29,7 +29,24 @@ export default function AddEventPage() {
     );
 
     if (hasEmptyFields) {
-      toast.error('Please fill in all fields');
+      console.log('Please fill in ALL fields');
+      toast.error('Please fill in ALL fields');
+    }
+
+    const res = await fetch(`${API_URL}/api/events`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+
+      body: JSON.stringify({ data: values }),
+    });
+
+    if (!res.ok) {
+      toast.error('Something went wrong!');
+    } else {
+      const evt = await res.json();
+      router.push(`/events/${evt.slug}`);
     }
   };
 
