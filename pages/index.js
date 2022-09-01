@@ -2,18 +2,16 @@ import React from 'react';
 import Layout from '@/components/Layout';
 import { API_URL } from '@/config/index';
 import Link from 'next/link';
-import EventItem from '@/components/EventItem';
 
 export default function HomePage({ events }) {
   return (
     <Layout>
       <h1>Upcoming Events</h1>
-      {events.length === 0 && <h3>No events to show</h3>}
+      {/* {events.length === 0 && <h3>No events to show</h3>}) */}
 
       {events.map((evt) => (
         <EventItem key={evt.id} evt={evt.attributes} />
       ))}
-
       {events.length > 0 && (
         <Link href="/events">
           <a className="btn-secondary">View All Events</a>
@@ -24,9 +22,7 @@ export default function HomePage({ events }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(
-    `${API_URL}/api/events?_sort=date:ASC&_pagination[limit]=3&populate=*`
-  );
+  const res = await fetch(`${API_URL}/api/events?_sort=date:ASC&populate=*`);
   const events = await res.json();
 
   return {

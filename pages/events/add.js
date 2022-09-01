@@ -29,7 +29,6 @@ export default function AddEventPage() {
     );
 
     if (hasEmptyFields) {
-      console.log('Please fill in ALL fields');
       toast.error('Please fill in ALL fields');
     }
 

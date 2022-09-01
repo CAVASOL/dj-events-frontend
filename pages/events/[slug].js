@@ -84,7 +84,9 @@ export async function getStaticProps({ params: { slug } }) {
 }
 
 // export async function getServerSideProps({ query: { slug } }) {
-//   const res = await fetch(`${API_URL}/events?slug=${slug}&populate=*`);
+//   const res = await fetch(
+//       `${API_URL}/events?filters[slug]slug=${slug}&populate=*`
+//       );
 //   const events = await res.json();
 
 //   return {

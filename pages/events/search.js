@@ -24,8 +24,8 @@ export default function SearchPage({ events }) {
 
 export async function getServerSideProps({ query: { term } }) {
   const query = qs.stringify({
-    _where: {
-      _or: [
+    where: {
+      or: [
         { name_contains: term },
         { performers_contains: term },
         { venue_contains: term },
