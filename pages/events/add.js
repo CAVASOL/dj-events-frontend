@@ -11,11 +11,11 @@ import styles from '@/styles/Form.module.css';
 export default function AddEventPage() {
   const [values, setValues] = useState({
     name: '',
+    performers: '',
     venue: '',
     address: '',
     date: '',
     time: '',
-    performers: '',
     description: '',
   });
 
@@ -35,7 +35,7 @@ export default function AddEventPage() {
     const res = await fetch(`${API_URL}/api/events`, {
       method: 'POST',
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
 
       body: JSON.stringify({ data: values }),
