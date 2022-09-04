@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import moment from 'moment';
 import { FaImage } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
 import Layout from '@/components/Layout';
+import Modal from '@/components/Modal';
+import ImageUpload from '@/components/ImageUpload';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Form.module.css';
 
@@ -23,8 +25,10 @@ export default function EditEventPage({ evt }) {
   });
 
   const [imagePreview, setImagePreview] = useState(
-    evt.image ? evt.image.attributes.data.formats.thumbnail.url : null
+    evt.image ? evt.image.data.attributes.formats.thumbnail.url : null
   );
+
+  const [showModal, setShowModal] = useState(false);
 
   const router = useRouter();
 
@@ -61,11 +65,19 @@ export default function EditEventPage({ evt }) {
     setValues({ ...values, [name]: value });
   };
 
+  const imageUploaded = async (e) => {
+    const res = await fetch(`${API_URL}/api/events/${evt.id}`);
+    const data = await res.json();
+
+    setImagePreview(data.image.data.attributes.formats.thumbnail.url);
+    setShowModal(false);
+  };
+
   return (
     <Layout title="Add New Event">
       <Link href="/events">Go Back</Link>
       <h1>Edit Event</h1>
-
+      <ToastContainer />
       <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.grid}>
           <div>
@@ -152,18 +164,21 @@ export default function EditEventPage({ evt }) {
       )}
 
       <div>
-        <button className="btn-secondary">
+        <button onClick={() => setShowModal(true)} className="btn-secondary">
           <FaImage /> Set Image
         </button>
       </div>
+
+      <Modal show={showModal} onClose={() => setShowModal(false)}>
+        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
+      </Modal>
     </Layout>
   );
 }
 
 export async function getServerSideProps({ params: { id } }) {
   const res = await fetch(`${API_URL}/api/events/${id}`);
-  const json = await res.json;
-  const evt = json.data;
+  const evt = res.json;
 
   return {
     props: {

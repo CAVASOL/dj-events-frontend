@@ -28,58 +28,57 @@ export default function EventPage({ evt }) {
     }
   };
 
-  if (evt !== undefined) {
-    const { attributes } = evt;
+  // if (evt !== undefined) {
+  //   const { attributes } = evt;
 
-    console.log(attributes);
+  //   console.log(attributes);
 
-    return (
-      <Layout>
-        <div className={styles.event}>
-          <div className={styles.controls}>
-            <Link href={`/events/edit/${evt.id}`}>
-              <a>
-                <FaPencilAlt /> Edit Event
-              </a>
-            </Link>
-            <a href="#" className={styles.delete} onClick={deleteEvent}>
-              <FaTimes /> Delete Event
+  return (
+    <Layout>
+      <div className={styles.event}>
+        <div className={styles.controls}>
+          <Link href={`/events/edit/${evt.id}`}>
+            <a>
+              <FaPencilAlt /> Edit Event
             </a>
-          </div>
-
-          <span>
-            {new Date(attributes.date).toLocaleDateString('en-US')} at{' '}
-            {attributes.time}
-          </span>
-
-          <h1>{attributes.name}</h1>
-          <ToastContainer />
-          {attributes.image.data.attributes.formats.medium.url && (
-            <div className={styles.image}>
-              <Image
-                src={attributes.image.data.attributes.formats.medium.url}
-                width={960}
-                height={600}
-              />
-            </div>
-          )}
-
-          <h3>Performers</h3>
-          <p>{attributes.performers}</p>
-
-          <h3>Description</h3>
-          <p>{attributes.description}</p>
-
-          <h3>Venue - {attributes.venue}</h3>
-          <p>{attributes.address}</p>
-
-          <Link href="/events">
-            <a className={styles.back}>{'<'} Go Back</a>
           </Link>
+          <a href="#" className={styles.delete} onClick={deleteEvent}>
+            <FaTimes /> Delete Event
+          </a>
         </div>
-      </Layout>
-    );
-  }
+
+        <span>
+          {new Date(attributes.date).toLocaleDateString('en-US')} at{' '}
+          {attributes.time}
+        </span>
+
+        <h1>{attributes.name}</h1>
+        <ToastContainer />
+        {evt.image && (
+          <div className={styles.image}>
+            <Image
+              src={evt.image.data.attributes.formats.medium.url}
+              width={960}
+              height={600}
+            />
+          </div>
+        )}
+
+        <h3>Performers</h3>
+        <p>{evt.performers}</p>
+
+        <h3>Description</h3>
+        <p>{evt.description}</p>
+
+        <h3>Venue - {attributes.venue}</h3>
+        <p>{evt.address}</p>
+
+        <Link href="/events">
+          <a className={styles.back}>{'<'} Go Back</a>
+        </Link>
+      </div>
+    </Layout>
+  );
 }
 
 export async function getStaticPaths() {
@@ -88,7 +87,7 @@ export async function getStaticPaths() {
   const events = json.data;
 
   const paths = events.map((evt) => ({
-    params: { slug: `${evt.slug}` },
+    params: { slug: evt.slug },
   }));
 
   return {
