@@ -7,7 +7,7 @@ import AuthContext from '@/context/AuthContext';
 import styles from '@/styles/Header.module.css';
 
 export default function Header() {
-  const [user, logout] = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <header className={styles.header}>
