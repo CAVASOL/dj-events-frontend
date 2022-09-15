@@ -10,7 +10,9 @@ export const AuthProvider = ({ children }) => {
 
   const router = useRouter();
 
-  useEffect(() => checkUserLoggedIn(), []);
+  useEffect(() => {
+    if (PROTECTED_ROUTES.includes(router.pathname)) checkUserLoggedIn();
+  }, []);
 
   const register = async (user) => {
     const res = await fetch(`${NEXT_URL}/api/register`, {
@@ -74,6 +76,9 @@ export const AuthProvider = ({ children }) => {
       setUser(data.user);
     } else {
       setUser(null);
+      if (PROTECTED_ROUTES.includes(router.pathname)) {
+        router.push('/account/login');
+      }
     }
   };
 

@@ -1,9 +1,9 @@
-import React, { Children } from 'react';
+import React from 'react';
 import moment from 'moment';
 import { FaImage } from 'react-icons/fa';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,8 +12,10 @@ import Modal from '@/components/Modal';
 import ImageUpload from '@/components/ImageUpload';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Form.module.css';
+import AuthContext from '@/context/AuthContext';
+import { parseCookies } from '@/helpers/index';
 
-export default function EditEventPage({ evt }) {
+export default function EditEventPage({ evt, token }) {
   const [values, setValues] = useState({
     name: evt.name,
     performers: evt.performers,
@@ -23,6 +25,12 @@ export default function EditEventPage({ evt }) {
     time: evt.time,
     description: evt.description,
   });
+
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return null;
+  }
 
   const [imagePreview, setImagePreview] = useState(
     evt.image ? evt.image.data.attributes.formats.thumbnail.url : null
@@ -177,14 +185,15 @@ export default function EditEventPage({ evt }) {
 }
 
 export async function getServerSideProps({ params: { id }, req }) {
-  const res = await fetch(`${API_URL}/api/events/${id}`);
-  const evt = res.json;
+  const { token } = parseCookies(req);
 
-  console.log(req.headers.cookie);
+  const res = await fetch(`${API_URL}/api/events/${id}`);
+  const evt = res.ok ? await res.json() : '';
 
   return {
     props: {
       evt,
+      token: token || '',
     },
   };
 }

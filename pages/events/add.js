@@ -1,12 +1,13 @@
 import React from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Form.module.css';
+import AuthContext from '@/context/AuthContext';
 
 export default function AddEventPage() {
   const [values, setValues] = useState({
@@ -18,6 +19,12 @@ export default function AddEventPage() {
     time: '',
     description: '',
   });
+
+  const { user } = useContext(AuthContext);
+
+  if (!user) {
+    return null;
+  }
 
   const router = useRouter();
 
