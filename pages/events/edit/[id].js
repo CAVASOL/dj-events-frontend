@@ -55,12 +55,17 @@ export default function EditEventPage({ evt, token }) {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
 
       body: JSON.stringify({ data: values }),
     });
 
     if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error('Unauthorized');
+        return;
+      }
       toast.error('Something went wrong!');
     } else {
       const evt = await res.json();
@@ -178,7 +183,11 @@ export default function EditEventPage({ evt, token }) {
       </div>
 
       <Modal show={showModal} onClose={() => setShowModal(false)}>
-        <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} />
+        <ImageUpload
+          evtId={evt.id}
+          imageUploaded={imageUploaded}
+          token={token}
+        />
       </Modal>
     </Layout>
   );

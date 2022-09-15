@@ -12,10 +12,6 @@ export default function DashboardPage({ events, token }) {
   const router = useRouter();
   const { user } = useContext(AuthContext);
 
-  const deleteEvent = (id) => {
-    console.log(id);
-  };
-
   useEffect(() => {
     if (!user) {
       router.push('/account/login');
@@ -25,6 +21,25 @@ export default function DashboardPage({ events, token }) {
   if (!user) {
     return null;
   }
+
+  const deleteEvent = async (id) => {
+    if (confirm('Are you sure?')) {
+      const res = await fetch('{API_URL}/api/events/${id}', {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.message);
+      } else {
+        router.reload();
+      }
+    }
+  };
 
   return (
     <Layout title="User Dashboard">

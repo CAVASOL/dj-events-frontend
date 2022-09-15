@@ -12,22 +12,6 @@ import { useRouter } from 'next/router';
 export default function EventPage({ evt }) {
   const router = useRouter();
 
-  const deleteEvent = async (e) => {
-    if (confirm('Are you sure?')) {
-      const res = await fetch('{API_URL}/api/events/${evt.id}', {
-        method: 'DELETE',
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        toast.error(data.message);
-      } else {
-        router.push('/events');
-      }
-    }
-  };
-
   // if (evt !== undefined) {
   //   const { attributes } = evt;
 
@@ -36,17 +20,6 @@ export default function EventPage({ evt }) {
   return (
     <Layout>
       <div className={styles.event}>
-        <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.id}`}>
-            <a>
-              <FaPencilAlt /> Edit Event
-            </a>
-          </Link>
-          <a href="#" className={styles.delete} onClick={deleteEvent}>
-            <FaTimes /> Delete Event
-          </a>
-        </div>
-
         <span>
           {new Date(attributes.date).toLocaleDateString('en-US')} at{' '}
           {attributes.time}
