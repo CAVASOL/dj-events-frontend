@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 import Layout from '@/components/Layout';
+import EventMap from '@/components/EventMap';
 import { API_URL } from '@/config/index';
 import styles from '@/styles/Event.module.css';
 import Link from 'next/link';
@@ -21,11 +22,10 @@ export default function EventPage({ evt }) {
     <Layout>
       <div className={styles.event}>
         <span>
-          {new Date(attributes.date).toLocaleDateString('en-US')} at{' '}
-          {attributes.time}
+          {new Date(evt.date).toLocaleDateString('en-US')} at {evt.time}
         </span>
 
-        <h1>{attributes.name}</h1>
+        <h1>{evt.name}</h1>
         <ToastContainer />
         {evt.image && (
           <div className={styles.image}>
@@ -45,6 +45,8 @@ export default function EventPage({ evt }) {
 
         <h3>Venue - {attributes.venue}</h3>
         <p>{evt.address}</p>
+
+        <EventMap evt={evt} />
 
         <Link href="/events">
           <a className={styles.back}>{'<'} Go Back</a>
