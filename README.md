@@ -1,12 +1,8 @@
-# DJ Events (Frontend)
+## DJ Events (Frontend)
 
 > Next.js website for DJ Events. This site uses Strapi as a backend.
 
-<!-- ![DJ Events](/public/images/screen.png 'DJ Events')
-
-[VIEW DEMO](https://djeventsfrontend.vercel.app) -->
-
-# Usage
+## Usage
 
 ### Setup Backend
 
